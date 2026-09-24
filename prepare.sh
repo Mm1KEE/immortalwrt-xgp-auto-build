@@ -5,12 +5,12 @@ free -h
 cat /proc/cpuinfo
 
 echo "update submodules"
-git submodule update --init --recursive --remote || { echo "submodule update failed"; exit 1; }
+git submodule update --init --recursive || { echo "submodule update failed"; exit 1; }
 
 if [ -d "immortalwrt" ]; then
     echo "repo dir exists"
     cd immortalwrt
-    git pull || { echo "git pull failed"; exit 1; }
+    git fetch origin openwrt-24.10 || { echo "git fetch failed"; exit 1; }
     git reset --hard HEAD
     git clean -fd
 else
@@ -18,6 +18,9 @@ else
     git clone -b openwrt-24.10 --single-branch --filter=blob:none "https://github.com/immortalwrt/immortalwrt" || { echo "git clone failed"; exit 1; }
     cd immortalwrt
 fi
+
+# Reuse the ImmortalWrt commit recorded on the running XGP firmware.
+git checkout --detach 8f6bf3907696dc7de78d1da5e25e0fda223497e8 || { echo "ImmortalWrt checkout failed"; exit 1; }
 
 echo "add feeds"
 cat feeds.conf.default > feeds.conf
