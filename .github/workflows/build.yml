@@ -25,7 +25,18 @@ jobs:
           df -h
           lsblk
           free -h
+      - name: Check if /mnt is mounted
+        id: check-mnt
+        run: |
+          if mountpoint -q /mnt; then
+            echo "mnt_exists=true" >> $GITHUB_OUTPUT
+            echo "/mnt is mounted"
+          else
+            echo "mnt_exists=false" >> $GITHUB_OUTPUT
+            echo "/mnt is not mounted, skipping maximize-build-space"
+          fi
       - name: Maximize build space
+        if: steps.check-mnt.outputs.mnt_exists == 'true'
         uses: easimon/maximize-build-space@master
         with:
           root-reserve-mb: 10240
