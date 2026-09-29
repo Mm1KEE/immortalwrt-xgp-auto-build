@@ -1,0 +1,11 @@
+--- a/application/qmodem/files/usr/share/qmodem/generic.sh
++++ b/application/qmodem/files/usr/share/qmodem/generic.sh
+@@ -555,6 +555,7 @@
+ # FM350 reports IPv6 in dotted decimal notation after the IPv4 address.
+ get_cgpaddr_ipv4()
+ {
+-    echo "$1" | grep -oE '"[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+"' | tr -d '"' \
++    echo "$1" | tr -d '"' | tr ',' '\n' \
++        | grep -oE '^[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$' \
+         | grep -v '^0\.0\.0\.0$' | head -n 1
+ }

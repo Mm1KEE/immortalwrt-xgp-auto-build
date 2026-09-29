@@ -42,6 +42,8 @@ diff package/network/config/wifi-scripts/files/lib/wifi/mac80211.uc ./files/lib/
 
 echo "update feeds"
 ./scripts/feeds update -a || { echo "update feeds failed"; exit 1; }
+echo "patch QModem CGPADDR IPv4 parsing"
+patch --batch --forward -d feeds/qmodem -p1 < ../patches/qmodem-cgpaddr-ipv4.patch || { echo "QModem CGPADDR patch failed"; exit 1; }
 echo "install feeds"
 ./scripts/feeds install -a || { echo "install feeds failed"; exit 1; }
 ./scripts/feeds install -a -f -p qmodem || { echo "install qmodem feeds failed"; exit 1; }
