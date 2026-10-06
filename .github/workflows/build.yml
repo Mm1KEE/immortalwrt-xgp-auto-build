@@ -1,8 +1,8 @@
 name: Build and Release
 
 on:
-  schedule:
-    - cron: '0 18 * * 4'
+  # schedule:
+  #   - cron: '0 18 * * 4'
   workflow_dispatch:
     # inputs:
     #   tag_name:
